@@ -15,6 +15,8 @@ from review_analysis.config import (
 )
 import pandas as pd
 
+from review_analysis.eda import build_eda_summary
+
 logger = logging.getLogger(__name__)
 
 _URL = re.compile(r"https?://\S+|www\.\S+")
@@ -187,4 +189,6 @@ def preprocess_pipeline(input_path, output_path):
     cleaned, dropped = clean_data(raw)
     labeled = add_sentiment_labels(cleaned)
     export_data(labeled, output_path)
-    return build_summary(raw, labeled, dropped, report)
+    summary = build_summary(raw, labeled, dropped, report)
+    summary["eda"] = build_eda_summary(labeled)  # Explore step results, saved with the summary
+    return summary
