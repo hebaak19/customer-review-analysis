@@ -1,0 +1,6 @@
+# PDFs
+*.pdf
+
+# Virtual environments
+.venv/
+venv/
