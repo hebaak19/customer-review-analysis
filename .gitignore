@@ -1,6 +1,18 @@
-# PDFs
 *.pdf
 
-# Virtual environments
 .venv/
 venv/
+
+__pycache__/
+*.pyc
+.pytest_cache/
+.mypy_cache/
+.ipynb_checkpoints/
+
+logs/
+outputs/
+models/
+data/processed/
+
+# Local config override (config.example.yaml stays tracked)
+config/config.yaml

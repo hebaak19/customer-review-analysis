@@ -89,14 +89,30 @@ customer-review-analysis/
 └── .gitignore
 ```
 
-## Setup and usage *(planned)*
-Commands will be added once the code exists. The expected flow is:
+## Setup and usage
+Run all commands from the project root. Requires Python 3.10 or newer.
 
-1. Create a virtual environment and install `requirements.txt`.
-2. Place the dataset CSV in `data/raw/`.
-3. Run the pipeline script to clean the data and train the model.
-4. Start the app with `streamlit run app.py`.
-5. Run `pytest` to execute the tests.
+**1. Create and activate a virtual environment, then install the packages**
+
+| | Windows (PowerShell) | macOS / Linux |
+|---|---|---|
+| Create | `python -m venv .venv` | `python3 -m venv .venv` |
+| Activate | `.venv\Scripts\Activate.ps1` | `source .venv/bin/activate` |
+| Install | `pip install -r requirements.txt` | `pip install -r requirements.txt` |
+
+**2. Add the dataset.** Download it from Kaggle (see [Dataset](#dataset)) and save it as `data/raw/reviews.csv`. The name is case-sensitive on macOS and Linux.
+
+**3. Run the preprocessing pipeline**
+
+| Windows | macOS / Linux |
+|---|---|
+| `python scripts/run_pipeline.py` | `python3 scripts/run_pipeline.py` |
+
+It loads, validates, cleans and labels the data, then writes `data/processed/clean_reviews.csv` and `outputs/reports/preprocessing_summary.json`. Use `--input` and `--output` to override the paths.
+
+**Configuration:** paths, column names and thresholds are in `config/config.example.yaml`. To use personal settings, copy it to `config/config.yaml` (git-ignored). Write paths with forward slashes (`data/raw/reviews.csv`) and keep them relative to the project root.
+
+*Planned:* model training, the Streamlit app (`streamlit run app.py`) and the tests (`pytest`).
 
 ## Limitations
 - One domain (women's clothing), so results may not transfer to other products or to support tickets.

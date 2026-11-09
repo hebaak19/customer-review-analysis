@@ -1,0 +1,1 @@
+"""The Streamlit app for the project."""
