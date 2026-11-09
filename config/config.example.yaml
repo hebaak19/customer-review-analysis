@@ -1,0 +1,44 @@
+# Project configuration.
+# config.py loads config/config.yaml if it exists, otherwise this example file.
+# To use personal settings, copy this file to config/config.yaml and edit it.
+
+paths:                      # relative to the project root
+  raw_data: "data/raw/reviews.csv"
+  processed_data: "data/processed/clean_reviews.csv"
+  model: "models/sentiment_model.joblib"
+  figures_dir: "outputs/figures"
+  reports_dir: "outputs/reports"
+
+columns:                    # must match the CSV header exactly
+  title: "Title"
+  text: "Review Text"
+  rating: "Rating"
+  categories:
+    - "Division Name"
+    - "Department Name"
+    - "Class Name"
+
+labels:                     # rating -> sentiment
+  negative_max: 2           # rating <= 2 -> negative
+  positive_min: 4           # rating >= 4 -> positive; anything between -> neutral
+
+cleaning:
+  valid_ratings: [1, 2, 3, 4, 5]
+  min_text_chars: 3
+  unknown_category: "Unknown"
+
+model:
+  test_size: 0.2
+  random_state: 42
+  max_features: 20000
+  ngram_range: [1, 2]
+  C: 1.0
+  class_weight: "balanced"  # reviews are mostly positive
+
+issues:
+  top_n_terms: 15
+  min_category_reviews: 30
+
+logging:
+  level: "INFO"
+  file: "logs/app.log"
