@@ -11,7 +11,8 @@ from review_analysis.config import (
     POSITIVE_MIN,
     MIN_TEXT_CHARS,
     VALID_RATING_RANGE,
-    MISSING_VALUE_PLACEHOLDER
+    MISSING_VALUE_PLACEHOLDER,
+    DROP_COLUMNS,
 )
 import pandas as pd
 
@@ -99,7 +100,8 @@ def clean_data(data):
     df = data.copy()
     dropped = {}
 
-    
+    df = df.drop(columns=DROP_COLUMNS, errors="ignore")
+
     df[RATING_COL] = pd.to_numeric(df[RATING_COL], errors="coerce")
     valid_rating = df[RATING_COL].isin(VALID_RATING_RANGE)
     dropped["invalid_rating"] = int((~valid_rating).sum())
