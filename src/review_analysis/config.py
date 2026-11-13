@@ -71,6 +71,7 @@ POSITIVE_MIN = CONFIG["labels"]["positive_min"]
 VALID_RATING_RANGE = list(CONFIG["cleaning"]["valid_ratings"])
 MIN_TEXT_CHARS = CONFIG["cleaning"]["min_text_chars"]
 MISSING_VALUE_PLACEHOLDER = CONFIG["cleaning"]["unknown_category"]
+DROP_COLUMNS = list(CONFIG["cleaning"].get("drop_columns", []))
 
 
 def setup_logging(cfg):

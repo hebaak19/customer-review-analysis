@@ -26,6 +26,7 @@ cleaning:
   valid_ratings: [1, 2, 3, 4, 5]
   min_text_chars: 3
   unknown_category: "Unknown"
+  drop_columns: ["Age"]
 
 model:
   test_size: 0.2

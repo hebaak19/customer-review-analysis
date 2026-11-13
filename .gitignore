@@ -16,3 +16,4 @@ data/processed/
 
 # Local config override (config.example.yaml stays tracked)
 config/config.yaml
+CLAUDE.md
