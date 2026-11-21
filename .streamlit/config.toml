@@ -1,0 +1,11 @@
+[theme]
+base = "light"
+primaryColor = "#7A2E5C"
+backgroundColor = "#F8F6F8"
+secondaryBackgroundColor = "#F1E7F0"
+textColor = "#2B2030"
+font = "Hanken Grotesk:https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600&display=swap"
+
+[client]
+toolbarMode = "minimal"
+showSidebarNavigation = false
