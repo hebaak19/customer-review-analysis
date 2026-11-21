@@ -6,6 +6,8 @@ paths:                      # relative to the project root
   raw_data: "data/raw/reviews.csv"
   processed_data: "data/processed/clean_reviews.csv"
   model: "models/sentiment_model.joblib"
+  issue_results: "outputs/reports/issue_extraction.csv"
+  submissions: "data/submissions/review_submissions.csv"
   figures_dir: "outputs/figures"
   reports_dir: "outputs/reports"
 
@@ -44,8 +46,9 @@ llm:
   max_tokens: 16
   timeout_seconds: 60
   max_retries: 4
-  workers: 4
+  workers: 8
   sample_per_class: 30
+  max_reviews: 2000
   issue_max_tokens: 200
   issue_categories:
     fit: "garment shape or cut does not suit the body (too tight, too loose, boxy, unflattering, too short or long)"

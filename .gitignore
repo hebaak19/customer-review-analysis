@@ -19,3 +19,6 @@ config/config.yaml
 CLAUDE.md
 
 .env
+
+.playwright-mcp/
+data/submissions/

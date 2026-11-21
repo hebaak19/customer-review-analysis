@@ -8,7 +8,6 @@ from concurrent.futures import ThreadPoolExecutor
 
 import pandas as pd
 
-from review_analysis.config import CONFIG
 from review_analysis.llm import LLM_CFG, LLMError, chat, load_credentials
 
 logger = logging.getLogger(__name__)

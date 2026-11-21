@@ -102,11 +102,15 @@ def load_model(path):
         raise ModelError(f"Could not load model from {path}: {e}") from e
 
 
-def predict_sentiment(model, texts):
-    """Return a dataframe with the predicted label and confidence for each text."""
+def class_probabilities(model, texts):
+    """Return a dataframe with one probability column per sentiment class for each text."""
     texts = pd.Series(texts).fillna("").astype(str)
     if texts.empty:
         raise ModelError("No text to classify.")
-    proba = model.predict_proba(texts)
-    labels = model.classes_[proba.argmax(axis=1)]
-    return pd.DataFrame({"prediction": labels, "confidence": proba.max(axis=1)}, index=texts.index)
+    return pd.DataFrame(model.predict_proba(texts), index=texts.index, columns=model.classes_)
+
+
+def predict_sentiment(model, texts):
+    """Return a dataframe with the predicted label and confidence for each text."""
+    proba = class_probabilities(model, texts)
+    return pd.DataFrame({"prediction": proba.idxmax(axis=1), "confidence": proba.max(axis=1)})
