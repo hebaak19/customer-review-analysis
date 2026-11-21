@@ -6,6 +6,8 @@ paths:                      # relative to the project root
   raw_data: "data/raw/reviews.csv"
   processed_data: "data/processed/clean_reviews.csv"
   model: "models/sentiment_model.joblib"
+  issue_results: "outputs/reports/issue_extraction.csv"
+  submissions: "data/submissions/review_submissions.csv"
   figures_dir: "outputs/figures"
   reports_dir: "outputs/reports"
 
@@ -35,6 +37,29 @@ model:
   ngram_range: [1, 2]
   C: 1.0
   class_weight: "balanced"  # reviews are mostly positive
+
+llm:
+  models:
+    - "deepseek-ai/DeepSeek-V4.1-Flash"
+  reasoning_effort: "none"
+  temperature: 0
+  max_tokens: 16
+  timeout_seconds: 60
+  max_retries: 4
+  workers: 8
+  sample_per_class: 30
+  max_reviews: 2000
+  issue_max_tokens: 200
+  issue_categories:
+    fit: "garment shape or cut does not suit the body (too tight, too loose, boxy, unflattering, too short or long)"
+    size: "sizing runs small or large, or the size label does not match the actual size"
+    fabric: "material feel or look (scratchy, thin, see-through, stiff, cheap-feeling, pilling, wrinkles)"
+    quality: "construction or durability (seams, zipper, buttons, stitching, fading, shrinking, falling apart)"
+    color: "colour or pattern differs from the photo, or looks unattractive"
+    price: "poor value for the money or too expensive for what it is"
+    comfort: "uncomfortable to wear (itchy, restrictive, heavy, hot)"
+    service: "shipping, delivery, packaging, wrong item, returns or customer service"
+    other: "a real complaint that fits none of the categories above"
 
 issues:
   top_n_terms: 15
