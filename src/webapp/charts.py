@@ -28,7 +28,7 @@ def horizontal_bars(frame, label_col, value_col, value_format, color=MULBERRY, c
     order = order if order is not None else frame.sort_values(value_col, ascending=False)[label_col].tolist()
     base = alt.Chart(frame).encode(
         y=alt.Y(f"{label_col}:N", sort=order, title=None, axis=alt.Axis(labelPadding=12)),
-        x=alt.X(f"{value_col}:Q", title=None, axis=None),
+        x=alt.X(f"{value_col}:Q", title=None, axis=None, scale=alt.Scale(domain=[0, (float(frame[value_col].max()) or 1.0) * 1.2])),
         tooltip=[alt.Tooltip(f"{label_col}:N", title=""), alt.Tooltip(f"{value_col}:Q", title="Value", format=value_format)],
     )
     if color_map:
@@ -42,16 +42,18 @@ def horizontal_bars(frame, label_col, value_col, value_format, color=MULBERRY, c
     return _style((bars + labels).properties(height=alt.Step(34)))
 
 
-def heatmap(frame, row_col, column_col, value_col, count_col=None, value_title="Share", value_format=".0%", column_order=None, label_map=None):
+def heatmap(frame, row_col, column_col, value_col, count_col=None, value_title="Share", value_format=".0%", column_order=None, label_map=None, ramp=MULBERRY_RAMP, row_order=None, x_angle=0, x_orient="top"):
     """Return a single-hue heatmap with the value written in every cell."""
     frame = frame.copy()
     if label_map:
         frame[column_col] = frame[column_col].map(lambda v: label_map.get(v, v))
+        frame[row_col] = frame[row_col].map(lambda v: label_map.get(v, v))
         column_order = [label_map.get(v, v) for v in column_order] if column_order is not None else None
+        row_order = [label_map.get(v, v) for v in row_order] if row_order is not None else None
     value_max = float(frame[value_col].max()) or 1.0
     base = alt.Chart(frame).encode(
-        x=alt.X(f"{column_col}:N", sort=column_order, title=None, axis=alt.Axis(labelAngle=0, orient="top", labelPadding=8, labelOverlap=False, labelFontSize=12)),
-        y=alt.Y(f"{row_col}:N", title=None, sort=None, axis=alt.Axis(labelPadding=10)),
+        x=alt.X(f"{column_col}:N", sort=column_order, title=None, axis=alt.Axis(labelAngle=x_angle, orient=x_orient, labelPadding=8, labelOverlap=False, labelFontSize=12, labelAlign="right" if x_angle < 0 else "center")),
+        y=alt.Y(f"{row_col}:N", title=None, sort=row_order, axis=alt.Axis(labelPadding=10)),
         tooltip=[
             alt.Tooltip(f"{row_col}:N", title=""),
             alt.Tooltip(f"{column_col}:N", title=""),
@@ -61,7 +63,7 @@ def heatmap(frame, row_col, column_col, value_col, count_col=None, value_title="
     cells = base.mark_rect(stroke=PAPER, strokeWidth=3).encode(
         color=alt.Color(
             f"{value_col}:Q",
-            scale=alt.Scale(range=MULBERRY_RAMP, domain=[0, value_max]),
+            scale=alt.Scale(range=ramp, domain=[0, value_max]),
             legend=alt.Legend(title=value_title, format=value_format, orient="bottom", direction="horizontal", gradientLength=220),
         )
     )

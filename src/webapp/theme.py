@@ -7,10 +7,12 @@ INK = "#2B2030"
 MUTED = "#6F6475"
 HAIRLINE = "#E4DCE5"
 RULE = "#C9BCC9"
-MULBERRY = "#7A2E5C"
+MULBERRY = "#85366A"
 ORCHID = "#F1E7F0"
 SENTIMENT_COLORS = {"negative": "#C0453F", "neutral": "#A99FAD", "positive": "#00897B"}
 MULBERRY_RAMP = ["#F3E6EF", "#DDB8D0", "#B97AA1", "#8F4375", "#5E2349"]
+BLUE_RAMP = ["#EAF1FA", "#BDD3EE", "#82AADB", "#4B80C4", "#1F4C86"]
+SOURCE_COLORS = {"llm": MULBERRY, "model": "#2F6FB5", "ratings": "#B7791F"}
 
 DISPLAY_FONT = "'DM Serif Display', Georgia, 'Times New Roman', serif"
 BODY_FONT = "'Hanken Grotesk', 'Segoe UI', system-ui, sans-serif"
@@ -67,6 +69,7 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
     color: {INK};
 }}
 
+.stApp .st-key-masthead {{ row-gap: 0.15rem !important; column-gap: 1.75rem !important; }}
 .tape {{
     height: 9px;
     margin: 0.9rem 0 2.75rem;
@@ -113,8 +116,6 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
     gap: 2rem;
-    border-top: 1px solid {HAIRLINE};
-    padding-top: 1.4rem;
     margin: 2.25rem 0 0.5rem;
 }}
 .stApp .figure-value {{
@@ -126,14 +127,32 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
 }}
 .stApp .figure-label {{ font-size: 0.92rem; color: {MUTED}; margin-top: 0.5rem; line-height: 1.4; }}
 
+.stApp .src-llm {{ --src: {SOURCE_COLORS['llm']}; }}
+.stApp .src-model {{ --src: {SOURCE_COLORS['model']}; }}
+.stApp .src-ratings {{ --src: {SOURCE_COLORS['ratings']}; }}
+.stApp .figure {{ border-top: 3px solid var(--src, {HAIRLINE}); padding-top: 1rem; }}
+.stApp .section-title[class*="src-"] {{ border-left: 4px solid var(--src); padding-left: 0.8rem; }}
+.sr-only {{
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+}}
 .stApp .footnote {{ font-size: 0.88rem; line-height: 1.5; color: {MUTED}; max-width: 64ch; margin: 1.1rem 0 0; }}
 
 .stApp .section-title.flush {{ margin-top: 0; }}
 .stApp .field-label {{ font-size: 0.92rem; font-weight: 500; margin: 0 0 0.35rem; }}
 
-.stApp ul.notes {{ list-style: none; padding: 0; margin: 0; border-bottom: 1px solid {HAIRLINE}; }}
-.stApp ul.notes li {{ padding: 1rem 0; border-top: 1px solid {HAIRLINE}; font-size: 1rem; line-height: 1.55; }}
-.stApp ul.notes strong {{ font-weight: 600; }}
+.stApp [data-testid="stMarkdownContainer"] ul.notes {{
+    list-style: none;
+    padding: 0 !important;
+    margin: 0 !important;
+    border-bottom: 1px solid {HAIRLINE};
+}}
+.stApp [data-testid="stMarkdownContainer"] ul.notes li {{ margin: 0 !important; padding: 1rem 0; border-top: 1px solid {HAIRLINE}; font-size: 1rem; line-height: 1.55; }}
+.stApp [data-testid="stMarkdownContainer"] ul.notes strong {{ font-weight: 600; }}
 
 .chip {{
     display: inline-block;
@@ -179,9 +198,6 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
     border-radius: 8px;
     border-color: {HAIRLINE};
 }}
-[data-baseweb="tag"] {{ background: {ORCHID}; border: 1px solid {HAIRLINE}; border-radius: 999px; }}
-[data-baseweb="tag"] span {{ color: {MULBERRY}; font-weight: 500; }}
-[data-baseweb="tag"] svg {{ fill: {MULBERRY}; }}
 [data-testid="stWidgetLabel"] p {{ font-size: 0.92rem; font-weight: 500; color: {INK}; }}
 
 [data-testid="stBaseButton-primary"], [data-testid="stBaseButton-secondaryFormSubmit"] {{
@@ -213,8 +229,15 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
 hr {{ border-color: {HAIRLINE}; }}
 
 @media (max-width: 720px) {{
-    [data-testid="stMainBlockContainer"], .block-container {{ padding: 1.5rem 1rem 4rem; }}
-    .figure-value {{ font-size: 2rem; }}
+    [data-testid="stMainBlockContainer"], .block-container {{ padding: 1.25rem 1rem 4rem; }}
+    .stApp .figure-value {{ font-size: 2rem; }}
+    .stApp .page-title {{ font-size: 2rem; }}
+    .stApp .section-title {{ font-size: 1.45rem; margin-top: 2.5rem; }}
+    .stApp .lede {{ font-size: 1.02rem; }}
+    .stApp .tape {{ margin: 0.6rem 0 1.75rem; }}
+    .stApp .st-key-masthead {{ column-gap: 1.1rem !important; }}
+    [data-testid="stPageLink"] a p, [data-testid="stPageLink-NavLink"] p {{ font-size: 0.9rem; }}
+    [data-testid="stForm"] {{ padding: 1rem; }}
 }}
 """
 

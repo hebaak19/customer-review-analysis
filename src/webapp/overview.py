@@ -29,7 +29,7 @@ def headline(data):
         else f"{escape(ui.issue_label(top))} is the complaint customers raise most."
     )
     lede = (
-        f"AI read {len(data):,} reviews. {share:.0%} mention {name}, and {complaint_rate(data):.0%} mention a problem of some kind, "
+        f"The language model read {len(data):,} reviews. {share:.0%} mention {name}, and {complaint_rate(data):.0%} mention a problem of some kind, "
         "including inside four and five star reviews."
     )
     return title, lede
@@ -76,22 +76,23 @@ def render():
 
     rates = group_complaint_rates(data, DEPARTMENT_COL, min_group_reviews()) if DEPARTMENT_COL in data else None
     items = [
-        (f"{len(data):,}", "reviews analysed by AI"),
-        (f"{complaint_rate(data):.0%}", "mention a complaint"),
-        (f"{negative_share(data):.0%}", "rated one or two stars"),
+        (f"{len(data):,}", "reviews analysed", "llm"),
+        (f"{complaint_rate(data):.0%}", "mention a complaint", "llm"),
+        (f"{negative_share(data):.0%}", "rated one or two stars", "ratings"),
     ]
     if rates is not None and not rates.empty:
-        items.append((str(rates.iloc[0][DEPARTMENT_COL]), "has the highest complaint rate"))
+        items.append((str(rates.iloc[0][DEPARTMENT_COL]), "has the highest complaint rate", "llm"))
+    ui.source_key(["llm", "ratings"])
     ui.figures(items)
-    ui.html('<p class="footnote">The review count covers a random sample of the review dataset plus reviews written in this app. Complaints are found by an AI reading each review, so counts can include minor remarks.</p>')
+    ui.html('<p class="footnote">The review count covers a random sample of the review dataset plus reviews written in this app. The language model can flag minor remarks as complaints. Our trained sentiment model is not used on this page.</p>')
 
     left, right = st.columns([3, 2], gap="large")
     with left:
-        ui.section("Where complaints concentrate", "How often each complaint appears in each department.")
+        ui.section("Where complaints concentrate", "How often each complaint appears in each department.", source="llm")
         if not show_department_heatmap(data):
             ui.empty_state("No department pattern yet.", "More analysed reviews are needed.")
     with right:
-        ui.section("What stands out")
+        ui.section("What stands out", source="llm")
         points = findings(data)
         if points:
             ui.notes(points)

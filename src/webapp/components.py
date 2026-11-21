@@ -17,6 +17,13 @@ ISSUE_LABELS = {
     "other": "Other",
 }
 
+SOURCE_NAMES = {
+    "llm": "Language model",
+    "model": "Our trained model",
+    "ratings": "Customers' star ratings",
+}
+BADGE_COLORS = {"llm": "violet", "model": "blue", "ratings": "orange"}
+
 
 def issue_label(issue):
     """Return the display name of a complaint category."""
@@ -28,21 +35,42 @@ def html(markup):
     st.markdown(markup, unsafe_allow_html=True)
 
 
+def _source_class(source):
+    """Return the CSS class that colours an element by its source, or an empty string for no source."""
+    return f" src-{source}" if source in SOURCE_NAMES else ""
+
+
+def _source_hidden_text(source):
+    """Return text read aloud by screen readers to name the source, so colour is never the only cue."""
+    return f'<span class="sr-only">. Source: {escape(SOURCE_NAMES[source])}</span>' if source in SOURCE_NAMES else ""
+
+
+def source_key(keys):
+    """Show a one-line key of coloured badges naming where each coloured number or section comes from."""
+    badges = "  ".join(f":{BADGE_COLORS[key]}-badge[{SOURCE_NAMES[key]}]" for key in keys)
+    st.markdown(f"Colors show where each number comes from:  {badges}")
+
+
 def page_title(title, lede=""):
     """Show a page title with an optional one-paragraph introduction."""
     html(f'<div class="page-title" role="heading" aria-level="1">{escape(title)}</div>' + (f'<p class="lede">{escape(lede)}</p>' if lede else ""))
 
 
-def section(title, note="", flush=False):
-    """Show a section heading with an optional note, without top spacing when it sits beside other content."""
-    html(f'<div class="section-title{" flush" if flush else ""}" role="heading" aria-level="2">{escape(title)}</div>' + (f'<p class="section-note">{escape(note)}</p>' if note else ""))
+def section(title, note="", flush=False, source=None):
+    """Show a section heading, with a coloured accent bar when its numbers come from a known source."""
+    heading = (
+        f'<div class="section-title{_source_class(source)}{" flush" if flush else ""}" role="heading" aria-level="2">'
+        f"{escape(title)}{_source_hidden_text(source)}</div>"
+    )
+    html(heading + (f'<p class="section-note">{escape(note)}</p>' if note else ""))
 
 
 def figures(items):
-    """Show a row of key figures, each given as a (value, label) pair."""
+    """Show a row of key figures given as (value, label, source), each topped by a rule in its source colour."""
     cells = "".join(
-        f'<div><div class="figure-value">{escape(str(value))}</div><div class="figure-label">{escape(label)}</div></div>'
-        for value, label in items
+        f'<div class="figure{_source_class(source)}"><div class="figure-value">{escape(str(value))}</div>'
+        f'<div class="figure-label">{escape(label)}{_source_hidden_text(source)}</div></div>'
+        for value, label, source in items
     )
     html(f'<div class="figures">{cells}</div>')
 
@@ -73,14 +101,14 @@ def empty_state(title, message):
 
 
 def masthead(pages, current):
-    """Show the page links with the current page marked, then the tape-measure rule."""
-    position = pages.index(current) + 1
+    """Show the page links in a row that wraps on small screens, with the current page marked."""
+    index = pages.index(current)
     html(
-        f"<style>.st-key-masthead [data-testid='stColumn']:nth-child({position}) a {{ border-bottom-color: {MULBERRY}; }}"
-        f".st-key-masthead [data-testid='stColumn']:nth-child({position}) a p {{ color: {INK}; }}</style>"
+        f"<style>.st-key-nav_{index} a {{ border-bottom-color: {MULBERRY}; }}"
+        f".st-key-nav_{index} a p {{ color: {INK}; }}</style>"
     )
-    with st.container(key="masthead"):
-        columns = st.columns([1, 1.45, 1.25, 1.55, 5], vertical_alignment="bottom")
-        for column, page in zip(columns, pages):
-            column.page_link(page)
+    with st.container(key="masthead", horizontal=True, gap="large"):
+        for position, page in enumerate(pages):
+            with st.container(key=f"nav_{position}", width="content"):
+                st.page_link(page)
     html('<div class="tape"></div>')

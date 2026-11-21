@@ -62,17 +62,19 @@ def show_saved_submission(saved):
     record = saved["record"]
     path = saved["path"]
     shown_path = path.relative_to(PROJECT_ROOT) if path.is_relative_to(PROJECT_ROOT) else path
-    ui.page_title("Review submitted", "Thank you. Here is how our AI read it.")
+    ui.page_title("Review submitted", "Thank you. Here is what the two models found.")
+    ui.source_key(["model", "llm"])
     with st.container(border=True):
+        ui.section("What our trained model found", flush=True, source="model")
         sentiment = record["predicted_sentiment"]
         ui.html(
-            f'<p class="statement">Your review reads as <strong>{sentiment}</strong>.</p>'
-            f'<p class="statement-note">The model is {record["confidence"]:.0%} sure. '
+            f'<p class="statement">Our trained model reads your review as <strong>{sentiment}</strong>.</p>'
+            f'<p class="statement-note">It is {record["confidence"]:.0%} sure. '
             f'You rated product {record["product_id"]} in {ui.escape(record["class_name"])} {record["rating"]} out of 5.</p>'
         )
         st.altair_chart(sentiment_probability_chart(saved["probabilities"]), width="stretch")
 
-        ui.section("What the AI found")
+        ui.section("What the language model found", source="llm")
         if record["llm_status"] != "ok":
             st.warning("The complaint analysis is unavailable right now. Your review was still saved.")
         elif not record["llm_issues"]:
@@ -98,7 +100,7 @@ def render():
         show_saved_submission(st.session_state[RESULT_KEY])
         return
 
-    ui.page_title("Write a review", "Tell us about something you bought. Our AI reads what you write and saves it with your rating.")
+    ui.page_title("Write a review", "Tell us about something you bought. A language model finds what went wrong, and our trained model scores how positive it sounds.")
     data_path = resolve_path(CONFIG, "processed_data")
     try:
         catalog = get_catalog(str(data_path), data_path.stat().st_mtime if data_path.is_file() else 0)
@@ -125,8 +127,8 @@ def render():
         ui.section("What happens next", flush=True)
         ui.notes(
             [
-                f"Your review text is sent to an AI service ({ui.escape(LLM_MODEL)}), which finds what went wrong.",
-                "A local model scores how positive or negative it reads.",
+                f"Your review text is sent to a language model ({ui.escape(LLM_MODEL)}), which finds what went wrong.",
+                "Our own trained model, which runs on this computer, scores how positive or negative it sounds.",
                 "Both results are saved with the product and your rating.",
                 "Teams read these reviews to improve fit, sizing and quality.",
             ]

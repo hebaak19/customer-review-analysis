@@ -19,19 +19,20 @@ def render():
     """Show the complaint categories the LLM found in the reviews, with filters and an explorer."""
     ui.page_title(
         "Complaints",
-        f"What customers say went wrong. Each review is read by AI ({LLM_MODEL}), including complaints hidden inside positive reviews.",
+        f"What customers say went wrong. A language model ({LLM_MODEL}) reads each review and lists the complaints, including ones hidden inside positive reviews.",
     )
     data, failed_sources = load_analysed_reviews()
     if data is None:
         ui.empty_state("No complaint data yet.", "Write a review, or run scripts/extract_issues.py to analyse the review dataset.")
         return
 
+    ui.source_key(["llm", "ratings"])
     sources = [s for s in (DATASET_SOURCE, CUSTOMER_SOURCE) if s in set(data["source"])]
     sentiments = [s for s in SENTIMENT_ORDER if s in set(data["sentiment"])]
     departments = sorted(data[DEPARTMENT_COL].dropna().unique()) if DEPARTMENT_COL in data else []
     first, second, third = st.columns(3)
-    chosen_sources = first.multiselect("Source", sources, default=sources)
-    chosen_sentiments = second.multiselect("Star rating", sentiments, default=sentiments, format_func=RATING_BANDS.get)
+    chosen_sources = first.multiselect("Where the review is from", sources, default=sources)
+    chosen_sentiments = second.multiselect("Customer's star rating", sentiments, default=sentiments, format_func=RATING_BANDS.get)
     chosen_departments = third.multiselect("Department", departments, default=departments)
     view = data[data["source"].isin(chosen_sources) & data["sentiment"].isin(chosen_sentiments)]
     if departments:
@@ -42,24 +43,24 @@ def render():
 
     ui.figures(
         [
-            (f"{len(view):,}", "reviews analysed by AI"),
-            (f"{complaint_rate(view):.0%}", "mention a complaint"),
-            (f"{int(failed_sources.isin(chosen_sources).sum()):,}", "could not be analysed"),
+            (f"{len(view):,}", "reviews analysed", "llm"),
+            (f"{complaint_rate(view):.0%}", "mention a complaint", "llm"),
+            (f"{int(failed_sources.isin(chosen_sources).sum()):,}", "could not be analysed", "llm"),
         ]
     )
     if len(view) < SMALL_SAMPLE:
         st.caption(f"Based on {len(view):,} reviews, so treat the patterns as rough.")
 
-    ui.section("Most common complaints", "The share of reviews that mention each one. A review can mention several.")
+    ui.section("Most common complaints", "The share of reviews that mention each one. A review can mention several.", source="llm")
     show_issue_frequency(view)
 
-    ui.section("Complaints by department", "The share of each department's reviews that mention each complaint. Departments with very few reviews are hidden.")
+    ui.section("Complaints by department", "The share of each department's reviews that mention each complaint. Departments with very few reviews are hidden.", source="llm")
     if not show_department_heatmap(view):
         ui.empty_state("No department pattern yet.", "More analysed reviews are needed.")
 
-    ui.section("Complaints by product class", "The product classes where customers raise problems most often.")
+    ui.section("Complaints by product class", "The product classes where customers raise problems most often.", source="llm")
     if not show_top_issue_per_class(view):
         ui.empty_state("No product class has enough reviews yet.", "More analysed reviews are needed.")
 
-    ui.section("Read the reviews", "Search the reviews behind the charts. Complaint categories come from a language model and can contain mistakes.")
+    ui.section("Read the reviews", "Search the reviews behind the charts. The complaints and quotes come from the language model and can contain mistakes. The rating group comes from the customer's stars.")
     show_review_explorer(view)

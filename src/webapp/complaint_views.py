@@ -43,7 +43,10 @@ def show_department_heatmap(view):
     shares = counts.div(sizes[counts.index], axis=0).reset_index().melt(id_vars=DEPARTMENT_COL, var_name="issue", value_name="share")
     order = counts.sum().sort_values(ascending=False).index.tolist()
     st.altair_chart(
-        heatmap(shares, DEPARTMENT_COL, "issue", "share", column_order=order, value_title="Share of department's reviews", label_map=ISSUE_LABELS),
+        heatmap(
+            shares, "issue", DEPARTMENT_COL, "share", row_order=order, value_title="Share of department's reviews",
+            label_map=ISSUE_LABELS, x_angle=-35, x_orient="bottom",
+        ),
         width="stretch",
     )
     return True
@@ -89,5 +92,5 @@ def show_review_explorer(view):
     table = shown[columns].head(PREVIEW_ROWS).assign(
         issues=lambda t: t["issues"].fillna("").map(lambda s: ", ".join(ISSUE_LABELS.get(i, i) for i in s.split("|") if i))
     )
-    renamed = {"source": "Source", "sentiment": "Sentiment", "issues": "Complaints", "evidence": "Evidence", "review": "Review"}
+    renamed = {"source": "From", "sentiment": "Rating group", "issues": "Complaints", "evidence": "Evidence", "review": "Review"}
     st.dataframe(table.rename(columns=renamed), hide_index=True, width="stretch")
