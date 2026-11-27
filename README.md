@@ -5,7 +5,7 @@ An AI system for women's clothing retailers that reads customer reviews and answ
 > ARTI303 | Programming for Artificial Intelligence - Final Project  
 > Topic: **Customer Support - Customer Review Analysis**
 
-> **Status:** working prototype. The data pipeline, the sentiment model, the LLM complaint extraction and the Streamlit app are implemented. There is no automated test suite yet, and the LLM's complaint labels have not been checked by hand (see [Limitations](#limitations)).
+> **Status:** working prototype. The data pipeline, the sentiment model, the LLM complaint extraction and the Streamlit app are implemented. There are 69 automated tests, and the LLM's complaint labels have not been checked by hand (see [Limitations](#limitations)).
 
 ## Table of contents
 1. [Problem definition](#problem-definition)
@@ -177,7 +177,7 @@ customer-review-analysis/
 │   │   ├── llm.py, issue_extraction.py
 │   │   └── insights.py, submissions.py
 │   └── webapp/            Streamlit pages, charts and styling
-├── tests/                 sample data (tests not written yet)
+├── tests/                 pytest suite and synthetic sample data (tests/data/sample_reviews.csv)
 ├── .env.example           names of the secrets the app needs
 ├── requirements.txt
 └── README.md
@@ -222,7 +222,13 @@ Preprocessing writes `data/processed/clean_reviews.csv`. Training writes `models
 
 It analyses a random sample up to the `llm.max_reviews` cap (2,000 by default) and saves the answers batch by batch, so an interrupted run resumes. Use `--limit N` to change the cap for one run. `python scripts/benchmark_llm.py` reproduces the model comparison.
 
-**6. Start the app**
+**6. Run the tests (optional).** They use the synthetic file `tests/data/sample_reviews.csv`, need no dataset download and no API key.
+
+```
+python -m pytest tests
+```
+
+**7. Start the app**
 
 ```
 streamlit run app.py
@@ -244,11 +250,17 @@ The first page load takes around 15 to 30 seconds while the model and libraries 
 - **A bag-of-words model** does not handle sarcasm or negation well.
 - **Language-model output can vary between runs** and depends on an external service that can fail or change.
 - **The complaint data is a 2,000-review sample**, not the whole dataset.
-- **No automated tests yet.** The pages were checked with throw-away headless runs and by hand, but no test suite is committed.
+- **Tests cover the analysis code, not the Streamlit pages.** The pages were checked with headless runs and by hand. The language-model calls are not tested because they need an API key.
 - **Submissions are stored in a local CSV.** There is no database, no user accounts and no rate limit on the live analysis.
 
 ## AI usage and acknowledgements
-Generative AI tools (Claude Code) assisted with dataset research, the data pipeline, the models, the app and its design, and this documentation. All use is to be logged in `docs/AI_USAGE_REPORT.md` with prompts, verification and corrections, as the course requires; that file has not been written yet. The language model DeepSeek-V4.1-Flash is also a **component of the product**: it reads reviews through the Fuse API as described above. The dataset is credited to its Kaggle author (see [Dataset](#dataset)).
+Generative AI tools (Claude Code) assisted with dataset research, the data pipeline, the models, the app and its design, and this documentation. The prompt log, verification and corrections are in [`docs/AI_USAGE_REPORT.md`](docs/AI_USAGE_REPORT.md), as the course requires. Some sections of that report still need to be filled in by the team. The language model DeepSeek-V4.1-Flash is also a **component of the product**: it reads reviews through the Fuse API as described above. The dataset is credited to its Kaggle author (see [Dataset](#dataset)).
 
 ## Team
-*Add group members and individual contributions here.*
+| # | Student Name | Student ID |
+|---|---|---|
+| 1 | Dima Moammer Alabido | 2230009050 |
+| 2 | Lara Hashem Alalmaei | 2250005629 |
+| 3 | Heba Adel Alkatheri | 2250009177 |
+| 4 | Jana Saeed AlMurayh | 2250003042 |
+| 5 | Dhai Waleed Abubakr | 2250003878 |

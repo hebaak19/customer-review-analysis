@@ -1,0 +1,38 @@
+Clothing ID,Age,Title,Review Text,Rating,Recommended IND,Positive Feedback Count,Division Name,Department Name,Class Name
+101,30,Love it,I love this dress. The fabric is soft and the fit is perfect.,5,1,2,General,Dresses,Dresses
+101,41,Great dress,Beautiful dress and very comfortable. I love the color and the fit.,5,1,1,General,Dresses,Dresses
+102,28,Perfect,Perfect fit and lovely soft fabric. I would buy it again and love it.,5,1,0,General,Tops,Blouses
+102,36,Wonderful,Wonderful top. Comfortable and flattering. I love the color.,4,1,3,General,Tops,Blouses
+103,52,Favorite,My favorite sweater. Warm and soft and the fit is great.,5,1,0,General Petite,Tops,Sweaters
+103,33,Very nice,Very nice sweater. Comfortable fabric and beautiful color. Love it.,4,1,1,General Petite,Tops,Sweaters
+104,45,Great pants,Great pants. The fit is perfect and they are comfortable and soft.,5,1,0,General,Bottoms,Pants
+104,39,Love these,Love these pants. Flattering fit and lovely fabric. I would buy again.,5,1,2,General,Bottoms,Pants
+105,26,Pretty,Pretty skirt with a perfect fit. Soft fabric and lovely color.,4,1,0,General,Bottoms,Skirts
+105,48,Lovely,Lovely skirt. Comfortable and flattering. I love the fit.,5,1,0,General,Bottoms,Skirts
+106,31,Cozy,Cozy jacket. Warm and soft with a perfect fit. Love the color.,5,1,4,General,Jackets,Jackets
+106,57,Nice,Nice jacket. Comfortable and flattering. Great fabric and fit.,4,1,0,General,Jackets,Jackets
+101,35,Just okay,The dress is okay. The fabric is fine but the fit is average.,3,0,0,General,Dresses,Dresses
+102,44,Average,Average top. The color is fine but the fabric is thin and the fit is okay.,3,1,0,General,Tops,Blouses
+103,29,Fine,The sweater is fine. Not great and not bad. The fit is average.,3,1,1,General Petite,Tops,Sweaters
+104,50,Mixed,Mixed feelings. The pants are comfortable but the fit is average and the fabric is okay.,3,0,0,General,Bottoms,Pants
+105,37,So so,The skirt is okay. The color is fine but the fit is average.,3,1,0,General,Bottoms,Skirts
+106,42,Okay,The jacket is okay. Fabric is fine but the fit is average and not great.,3,0,2,General,Jackets,Jackets
+101,38,Too small,Terrible fit. The dress runs small and the fabric feels cheap. I returned it.,1,0,5,General,Dresses,Dresses
+101,46,Poor quality,Poor quality dress. The seams came apart and the fabric is scratchy. Returned.,1,0,3,General,Dresses,Dresses
+102,34,Disappointed,Disappointed with this top. Cheap fabric and the fit is awful. I returned it.,2,0,1,General,Tops,Blouses
+102,27,Awful,Awful top. The fabric is see through and the color is not as pictured. Returned.,1,0,0,General,Tops,Blouses
+103,55,Itchy,Itchy sweater. The fabric is scratchy and cheap and the fit is bad. Returned.,2,0,2,General Petite,Tops,Sweaters
+103,43,Bad fit,Bad fit. The sweater runs large and the quality is poor. I returned it.,1,0,0,General Petite,Tops,Sweaters
+104,32,Too tight,Too tight and uncomfortable. The pants are poor quality and the zipper broke. Returned.,1,0,4,General,Bottoms,Pants
+104,49,Disappointing,Disappointing pants. Cheap fabric and an awful fit. I returned them.,2,0,0,General,Bottoms,Pants
+105,40,Cheap,Cheap skirt. The fabric is thin and the seams are poor quality. Returned.,2,0,1,General,Bottoms,Skirts
+105,25,Not good,Not good. The skirt fit is bad and the color is not as pictured. Returned.,1,0,0,General,Bottoms,Skirts
+106,53,Falling apart,The jacket is falling apart. Poor quality and cheap fabric. I returned it.,1,0,3,General,Jackets,Jackets
+106,36,Wrong size,Wrong size and awful fit. The jacket is uncomfortable and cheap. Returned.,2,0,0,General,Jackets,Jackets
+107,30,,Soft and comfortable. I love the fit and the color of this blouse.,5,1,0,General,Tops,Blouses
+107,41,,The blouse is okay. Fabric is fine but the fit is average.,3,1,0,General,Tops,Blouses
+107,38,,Poor quality blouse. Cheap fabric and the fit is bad. Returned.,1,0,0,General,Tops,Blouses
+108,29,Has link,Great dress and I love the fit. See photos at https://example.com/photo for more.,5,1,0,General,Dresses,Dresses
+109,35,Bad rating,This row has an invalid rating and must be dropped.,9,1,0,General,Tops,Blouses
+110,35,Empty,,4,1,0,General,Tops,Blouses
+101,30,Love it,I love this dress. The fabric is soft and the fit is perfect.,5,1,2,General,Dresses,Dresses
